@@ -12,8 +12,7 @@
 
 ## Repository state
 
-- repository contains specifications only; no application source, manifest, lockfile, CI workflow, environment template, migration, or README exists yet.
-- Do not invent commands. No install, dev, test, single-test, lint, typecheck, format, build, or CI command is configured.
+- Application source, tests, CI, and deployment config now exist (`src/`, `prisma/`, `.github/workflows/ci.yml`, `vercel.json`).
 - When scaffolding creates verified scripts, replace preceding line exact commands from `package.json` or CI.
 
 ## Planned code map
@@ -46,7 +45,8 @@
 - Follow relevant scenarios in `specs/001-branch-lvm-edc-monitoring/quickstart.md`.
 - For ingestion: verify valid upsert, invalid-row rejection, health recalculation, and preserved visit history.
 - For map changes: verify SSR safety, status filters, distance ordering, navigation links, and persisted pin adjustments.
-- Add actual test and CI commands soon configuration exists.
+- Commands: `npm run lint`, `npm test`, `npm run build`, `npx prisma generate`, `npx prisma db push`, `npx prisma db seed`.
+- GitHub Actions runs lint, tests, Prisma client generation, and build on pull requests and `main` pushes.
 
 ## Documentation
 
