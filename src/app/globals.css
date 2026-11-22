@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #0f172a;
+  --color-on-primary: #ffffff;
+  --color-secondary: #1e293b;
+  --color-on-secondary: #ffffff;
+  --color-accent: #22c55e;
+  --color-on-accent: #0f172a;
+  --color-background: #020617;
+  --color-foreground: #f8fafc;
+  --color-card: #0e1223;
+  --color-card-foreground: #f8fafc;
+  --color-muted: #1a1e2f;
+  --color-muted-foreground: #94a3b8;
+  --color-border: #334155;
+  --color-destructive: #ef4444;
+  --color-on-destructive: #000000;
+  --color-ring: #ffffff;
+  --font-heading: "Fira Code", monospace;
+  --font-body: "Fira Sans", sans-serif;
+}
+
+html {
+  scroll-padding-top: 4rem;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
+.leaflet-container {
+  background: var(--color-muted);
+}
+
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.pin-red-active {
+  animation: pulse-red 1.5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pin-red-active {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}

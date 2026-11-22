@@ -1,0 +1,98 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BranchConfig {
+  id                     String   @id @default("default-branch")
+  branchName             String   @default("Bank Mandiri KC Jakarta Senopati")
+  branchCode             String   @default("10100")
+  latitude               Float    @default(-6.2297)
+  longitude              Float    @default(106.8082)
+  redVolumeThreshold     Float    @default(3000000.0)
+  yellowDropPctThreshold Float    @default(0.30)
+  redInactivityDays      Int      @default(14)
+  updatedAt              DateTime @updatedAt
+
+  @@map("branch_configs")
+}
+
+enum ProductType {
+  EDC
+  LIVIN_MERCHANT
+  BOTH
+}
+
+enum OperationalStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum HealthStatus {
+  RED
+  YELLOW
+  GREEN
+}
+
+enum RootCause {
+  PAPER_OUT
+  SIM_SIGNAL_DEAD
+  CASHIER_UNTRAINED
+  COMPETITOR_PROMO
+  STORE_CLOSED
+  OTHER
+}
+
+enum VisitStatus {
+  DONE
+}
+
+model Merchant {
+  id                  String            @id @default(cuid())
+  cif                 String
+  merchantName        String
+  productType         ProductType       @default(EDC)
+  mid                 String            @unique
+  tid                 String?
+  status              OperationalStatus @default(ACTIVE)
+  salesVolumeCurrent  Float             @default(0.0)
+  salesVolumePrevious Float             @default(0.0)
+  txCountCurrent      Int               @default(0)
+  txCountPrevious     Int               @default(0)
+  healthStatus        HealthStatus      @default(GREEN)
+  businessAddress     String
+  latitude            Float
+  longitude           Float
+  contactPhone        String?
+  lastUploadedAt      DateTime          @default(now())
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  visits VisitLog[]
+
+  @@index([healthStatus])
+  @@index([latitude, longitude])
+  @@index([cif])
+  @@map("merchants")
+}
+
+model VisitLog {
+  id          String      @id @default(cuid())
+  merchantId  String
+  merchant    Merchant    @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  visitDate   DateTime    @default(now())
+  visitorName String
+  rootCause   RootCause   @default(OTHER)
+  actionTaken String      @db.Text
+  notes       String?     @db.Text
+  status      VisitStatus @default(DONE)
+  createdAt   DateTime    @default(now())
+
+  @@index([merchantId])
+  @@index([visitDate])
+  @@map("visit_logs")
+}
