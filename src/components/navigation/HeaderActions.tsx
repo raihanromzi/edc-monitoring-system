@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui";
+import { Database, LoaderCircle } from "lucide-react";
 
 export default function HeaderActions() {
   const [loading, setLoading] = useState(false);
@@ -21,11 +21,22 @@ export default function HeaderActions() {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      {message ? <span role="status" className="text-xs text-slate-400">{message}</span> : null}
-      <Button variant="secondary" onClick={loadDemo} disabled={loading}>
-        {loading ? "Loading…" : "Load Demo"}
-      </Button>
-    </div>
+    <>
+      <button
+        type="button"
+        className="btn-icon disabled:cursor-wait disabled:opacity-60"
+        onClick={loadDemo}
+        disabled={loading}
+        aria-label={loading ? "Loading sample data" : "Load sample data"}
+        title="Load sample data"
+      >
+        {loading ? (
+          <LoaderCircle className="h-[17px] w-[17px] animate-spin" aria-hidden="true" />
+        ) : (
+          <Database className="h-[17px] w-[17px]" aria-hidden="true" />
+        )}
+      </button>
+      {message ? <span role="status" className="sr-only">{message}</span> : null}
+    </>
   );
 }

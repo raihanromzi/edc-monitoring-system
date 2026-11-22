@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Navigation, Phone, Clock } from "lucide-react";
-import { Button, Card } from "@/components/ui";
+import { Clock, Navigation, Phone, X } from "lucide-react";
+import { Button, Tabs } from "@/components/ui";
 import StatusBadge from "./StatusBadge";
 import VisitModal from "@/components/visits/VisitModal";
 import VisitHistory from "@/components/visits/VisitHistory";
+import { formatDistance, formatIdr } from "@/lib/format";
 import type { MerchantDto } from "@/lib/types";
-
-const idr = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
 
 interface VisitRecord {
   id: string;
@@ -19,7 +18,15 @@ interface VisitRecord {
   notes: string | null;
 }
 
-export default function MerchantCard({ merchant, onVisitLogged }: { merchant: MerchantDto; onVisitLogged?: () => void }) {
+export default function MerchantCard({
+  merchant,
+  onVisitLogged,
+  onClose,
+}: {
+  merchant: MerchantDto;
+  onVisitLogged?: () => void;
+  onClose?: () => void;
+}) {
   const [tab, setTab] = useState<"detail" | "history">("detail");
   const [modalOpen, setModalOpen] = useState(false);
   const [visits, setVisits] = useState<VisitRecord[]>([]);
@@ -37,43 +44,109 @@ export default function MerchantCard({ merchant, onVisitLogged }: { merchant: Me
     ? `https://www.google.com/maps/dir/?api=1&destination=${merchant.latitude},${merchant.longitude}`
     : null;
 
+  const dropIsNegative = merchant.dropPercentage > 0;
+
   return (
-    <Card className="space-y-3">
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <h3 className="text-sm font-semibold text-slate-100">{merchant.merchantName}</h3>
-          <p className="text-xs text-slate-400">{merchant.productType.replace("_", " ")} · {merchant.mid}</p>
+    <div className="space-y-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="mb-1.5">
+            <StatusBadge status={merchant.healthStatus} />
+          </div>
+          <h2 className="text-[15px] font-semibold leading-tight text-ink">{merchant.merchantName}</h2>
+          <p className="num mt-1 text-[11px] text-ink-secondary">
+            {merchant.productType.replace("_", " ")} · MID {merchant.mid}
+          </p>
         </div>
-        <StatusBadge status={merchant.healthStatus} />
+        {onClose ? (
+          <button
+            type="button"
+            onClick={onClose}
+            className="btn-icon h-8 w-8 shrink-0 rounded-[10px]"
+            aria-label="Close merchant details"
+            title="Close"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
+        ) : null}
       </div>
 
-      <div className="flex gap-2 text-xs" role="tablist">
-        <button role="tab" aria-selected={tab === "detail"} onClick={() => setTab("detail")} className={`cursor-pointer rounded px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${tab === "detail" ? "bg-slate-100 text-slate-900" : "text-slate-400"}`}>Detail</button>
-        <button role="tab" aria-selected={tab === "history"} onClick={() => setTab("history")} className={`cursor-pointer rounded px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${tab === "history" ? "bg-slate-100 text-slate-900" : "text-slate-400"}`}>Visit History</button>
-      </div>
+      <Tabs
+        className="grid grid-cols-2 gap-1.5"
+        active={tab}
+        onChange={(k) => setTab(k as "detail" | "history")}
+        tabs={[
+          { key: "detail", label: "Detail" },
+          { key: "history", label: "Visit history" },
+        ]}
+      />
 
       {tab === "detail" ? (
-        <dl className="grid grid-cols-2 gap-2 text-xs text-slate-300">
-          <div><dt className="text-slate-500">Current volume</dt><dd className="font-semibold text-slate-100">{idr.format(merchant.salesVolumeCurrent)}</dd></div>
-          <div><dt className="text-slate-500">Previous volume</dt><dd>{idr.format(merchant.salesVolumePrevious)}</dd></div>
-          <div><dt className="text-slate-500">Drop</dt><dd className={merchant.dropPercentage > 0 ? "text-red-400" : "text-green-400"}>{merchant.dropPercentage.toFixed(1)}%</dd></div>
-          <div><dt className="text-slate-500">Transactions</dt><dd>{merchant.txCountCurrent} / {merchant.txCountPrevious}</dd></div>
-          <div className="col-span-2"><dt className="text-slate-500">Address</dt><dd>{merchant.businessAddress}</dd></div>
-          <div><dt className="text-slate-500">Distance</dt><dd>{merchant.distanceMeters !== null ? `${Math.round(merchant.distanceMeters)} m` : "—"}</dd></div>
-          {merchant.contactPhone ? <div className="flex items-center gap-1"><Phone className="h-3 w-3" aria-hidden="true" /><dd>{merchant.contactPhone}</dd></div> : null}
-          {merchant.lastVisitedAt ? <div className="col-span-2 flex items-center gap-1 text-green-400"><Clock className="h-3 w-3" aria-hidden="true" />Visited {new Date(merchant.lastVisitedAt).toLocaleDateString("id-ID")}</div> : null}
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-[12px]">
+          <div className="rounded-control bg-subtle p-2.5">
+            <dt className="text-[11px] text-ink-muted">Current volume</dt>
+            <dd className="num mt-0.5 font-semibold text-ink">{formatIdr(merchant.salesVolumeCurrent)}</dd>
+          </div>
+          <div className="rounded-control bg-subtle p-2.5">
+            <dt className="text-[11px] text-ink-muted">Previous volume</dt>
+            <dd className="num mt-0.5 text-ink-secondary">{formatIdr(merchant.salesVolumePrevious)}</dd>
+          </div>
+          <div className="rounded-control bg-subtle p-2.5">
+            <dt className="text-[11px] text-ink-muted">Drop</dt>
+            <dd className={`num mt-0.5 font-semibold ${dropIsNegative ? "text-red-700" : "text-emerald-700"}`}>
+              {merchant.dropPercentage.toFixed(1)}%
+            </dd>
+          </div>
+          <div className="rounded-control bg-subtle p-2.5">
+            <dt className="text-[11px] text-ink-muted">Transactions</dt>
+            <dd className="num mt-0.5 text-ink-secondary">
+              {merchant.txCountCurrent} / {merchant.txCountPrevious}
+            </dd>
+          </div>
+          <div className="col-span-2">
+            <dt className="text-[11px] text-ink-muted">Address</dt>
+            <dd className="mt-0.5 leading-snug text-ink-secondary">{merchant.businessAddress}</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] text-ink-muted">Distance</dt>
+            <dd className="num mt-0.5 text-ink-secondary">{formatDistance(merchant.distanceMeters)}</dd>
+          </div>
+          {merchant.contactPhone ? (
+            <div>
+              <dt className="text-[11px] text-ink-muted">Phone</dt>
+              <dd className="num mt-0.5 flex items-center gap-1 text-ink-secondary">
+                <Phone className="h-3 w-3" aria-hidden="true" />
+                {merchant.contactPhone}
+              </dd>
+            </div>
+          ) : null}
+          {merchant.lastVisitedAt ? (
+            <div className="col-span-2 flex items-center gap-1.5 text-emerald-700">
+              <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+              Visited {new Date(merchant.lastVisitedAt).toLocaleDateString("id-ID")}
+            </div>
+          ) : null}
         </dl>
       ) : (
         <VisitHistory visits={visits} />
       )}
 
-      <div className="flex gap-2">
+      <div className="grid grid-cols-2 gap-2">
         {navUrl ? (
-          <a href={navUrl} target="_blank" rel="noopener noreferrer" className="inline-flex cursor-pointer items-center gap-1 rounded-lg bg-green-500 px-3 py-2 text-xs font-semibold text-slate-900 transition-opacity duration-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
-            <Navigation className="h-3 w-3" aria-hidden="true" /> Navigate
+          <a
+            href={navUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary text-[13px]"
+          >
+            <Navigation className="h-3.5 w-3.5" aria-hidden="true" /> Navigate
           </a>
-        ) : null}
-        <Button variant="secondary" onClick={() => setModalOpen(true)}>Log Visit</Button>
+        ) : (
+          <span className="flex h-10 items-center justify-center rounded-control border border-dashed border-control text-[12px] text-ink-muted">
+            No coordinates
+          </span>
+        )}
+        <Button variant="secondary" onClick={() => setModalOpen(true)}>Log visit</Button>
       </div>
 
       <VisitModal
@@ -83,6 +156,6 @@ export default function MerchantCard({ merchant, onVisitLogged }: { merchant: Me
         onClose={() => setModalOpen(false)}
         onSaved={() => { setModalOpen(false); onVisitLogged?.(); }}
       />
-    </Card>
+    </div>
   );
 }

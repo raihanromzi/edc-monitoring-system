@@ -1,60 +1,298 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Tokens mirror design-system/mandiri-edc-monitoring/tokens.css */
 :root {
-  --color-primary: #0f172a;
-  --color-on-primary: #ffffff;
-  --color-secondary: #1e293b;
-  --color-on-secondary: #ffffff;
-  --color-accent: #22c55e;
-  --color-on-accent: #0f172a;
-  --color-background: #020617;
-  --color-foreground: #f8fafc;
-  --color-card: #0e1223;
-  --color-card-foreground: #f8fafc;
-  --color-muted: #1a1e2f;
-  --color-muted-foreground: #94a3b8;
-  --color-border: #334155;
-  --color-destructive: #ef4444;
-  --color-on-destructive: #000000;
-  --color-ring: #ffffff;
-  --font-heading: "Fira Code", monospace;
-  --font-body: "Fira Sans", sans-serif;
+  --bg-canvas: #f4f6f9;
+  --surface-glass: rgba(255, 255, 255, 0.92);
+  --surface-subtle: #f8fafc;
+  --surface-hover: #f1f5f9;
+  --border-hairline: rgba(15, 23, 42, 0.08);
+  --border-control: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent-cobalt: #2563eb;
+  --accent-sky: #38bdf8;
+  --status-red: #dc2626;
+  --status-amber: #d97706;
+  --status-emerald: #10b981;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --shadow-panel: 0 12px 36px -4px rgba(15, 23, 42, 0.09), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-control: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
-html {
-  scroll-padding-top: 4rem;
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-body);
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-heading);
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
+
+/* Wrapped in @layer components so Tailwind utilities (h-*, px-*) can still override a primitive. */
+@layer components {
+
+/* ---------- Surfaces ---------- */
+
+.glass-panel {
+  background: var(--surface-glass);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-hairline);
+  border-radius: 16px;
+  box-shadow: var(--shadow-panel);
+}
+
+/* ---------- Component primitives (strict) ---------- */
+
+.btn-primary,
+.btn-secondary,
+.btn-icon,
+.btn-danger,
+.chip,
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+  transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+.btn-primary:hover { background: #1e293b; }
+
+.btn-secondary {
+  padding: 0 14px;
+  background: var(--surface-subtle);
+  color: var(--text-primary);
+  border: 1px solid var(--border-control);
+}
+.btn-secondary:hover { background: var(--surface-hover); border-color: #cbd5e1; }
+
+.btn-danger {
+  background: var(--status-red);
+  color: #ffffff;
+}
+.btn-danger:hover { opacity: 0.9; }
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--border-hairline);
+  color: #334155;
+  box-shadow: var(--shadow-control);
+}
+.btn-icon:hover { background: #ffffff; color: var(--text-primary); }
+
+.chip {
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  justify-content: space-between;
+}
+.chip:hover { background: #ffffff; color: var(--text-primary); }
+.chip[aria-pressed="true"],
+.chip[aria-selected="true"] {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+}
+.chip-count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.07);
+}
+.chip[aria-pressed="true"] .chip-count,
+.chip[aria-selected="true"] .chip-count {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.field {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-control);
+  background: #ffffff;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.field::placeholder { color: var(--text-muted); }
+.field:focus {
+  outline: none;
+  border-color: var(--accent-cobalt);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+textarea.field { height: auto; padding: 10px 12px; min-height: 80px; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-cobalt);
+  outline-offset: 2px;
+}
+
+} /* end @layer components */
+
+/* ---------- Leaflet ---------- */
 
 .leaflet-container {
-  background: var(--color-muted);
+  background: var(--bg-canvas);
+  font-family: var(--font-sans);
+}
+
+/* Desaturate OSM tiles so health markers stand out */
+.leaflet-tile-pane {
+  filter: grayscale(0.65) saturate(0.7) brightness(1.03) contrast(0.96);
+}
+
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border-radius: 9999px;
+  padding: 0 8px !important;
+  margin: 0 8px 8px 0 !important;
+  font-size: 10px !important;
+  color: var(--text-secondary) !important;
+  backdrop-filter: blur(8px);
+}
+
+.leaflet-tooltip {
+  background: #ffffff;
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px;
+  box-shadow: var(--shadow-control);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+}
+.leaflet-tooltip::before { display: none; }
+
+.map-marker-wrap { background: transparent; border: 0; }
+
+.map-marker {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 2.5px solid var(--marker-color, #10b981);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.map-marker::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--text-primary);
+}
+.map-marker[data-selected="true"] {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+}
+.map-marker[data-selected="true"]::after { background: #ffffff; }
+
+.map-branch {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: var(--text-primary);
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.14), 0 2px 6px rgba(15, 23, 42, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.map-branch::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--accent-sky);
 }
 
 @keyframes pulse-red {
-  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
-  70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.55); }
+  70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
 }
 
 .pin-red-active {
-  animation: pulse-red 1.5s infinite;
+  animation: pulse-red 1.6s infinite;
+}
+
+@keyframes live-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--accent-cobalt);
+  animation: live-dot 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pin-red-active {
+  .pin-red-active,
+  .live-dot {
     animation: none;
   }
   * {

@@ -7,7 +7,7 @@ import type { MerchantDto } from "@/lib/types";
 const LeafletMap = dynamic(() => import("./LeafletMap"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-slate-800 text-sm text-slate-400" role="status" aria-label="Loading map">
+    <div className="flex h-full w-full items-center justify-center text-sm text-ink-secondary" role="status" aria-label="Loading map">
       Loading map…
     </div>
   ),
@@ -24,9 +24,11 @@ export default function MapContainerWrapper(props: Props) {
   const [adjustMode, setAdjustMode] = useState(false);
   const [draftPin, setDraftPin] = useState<{ id: string; lat: number; lng: number } | null>(null);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   async function savePin() {
     if (!draftPin) return;
+    setSaveError("");
     const res = await fetch(`/api/merchants/${draftPin.id}/coordinates`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -41,11 +43,19 @@ export default function MapContainerWrapper(props: Props) {
       }
       setDraftPin(null);
       setAdjustMode(false);
+    } else {
+      setSaveError("Could not save pin. Try again.");
     }
   }
 
+  function toggleAdjust() {
+    setAdjustMode((v) => !v);
+    setDraftPin(null);
+    setSaveError("");
+  }
+
   return (
-    <div className="relative h-full min-h-[420px] w-full">
+    <div className="relative h-full w-full">
       <LeafletMap
         {...props}
         adjustMode={adjustMode}
@@ -54,28 +64,31 @@ export default function MapContainerWrapper(props: Props) {
           setSaved(false);
         }}
       />
-      <div className="absolute right-2 top-2 z-[1000] flex flex-col items-end gap-2">
+
+      <div className="absolute right-4 top-4 z-[1000] flex max-w-[calc(100%-2rem)] items-center gap-2 rounded-full border border-slate-900/[0.08] bg-white/92 py-1 pl-4 pr-1.5 text-[12px] text-ink-secondary shadow-[0_12px_36px_-4px_rgba(15,23,42,0.09),0_2px_6px_rgba(15,23,42,0.04)] backdrop-blur-xl max-md:left-2 max-md:right-2 max-md:top-2 max-md:max-w-none">
+        <span className="live-dot shrink-0" aria-hidden="true" />
+        <span className="truncate">
+          {adjustMode ? "Drag the pin to set its location" : "Click a pin to open its details"}
+        </span>
         {props.selectedId ? (
           <button
-            onClick={() => {
-              setAdjustMode((v) => !v);
-              setDraftPin(null);
-            }}
-            className="cursor-pointer rounded-lg border border-slate-600 bg-[#0E1223] px-3 py-2 text-xs font-semibold text-slate-200 shadow-lg transition-colors duration-200 hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            type="button"
+            onClick={toggleAdjust}
             aria-pressed={adjustMode}
+            className="btn-secondary h-[30px] rounded-full px-3 text-[12px]"
           >
-            {adjustMode ? "Cancel Pin Adjustment" : "Adjust Pin Location"}
+            {adjustMode ? "Cancel" : "Adjust pin"}
           </button>
         ) : null}
         {draftPin ? (
-          <button
-            onClick={savePin}
-            className="cursor-pointer rounded-lg bg-green-500 px-3 py-2 text-xs font-semibold text-slate-900 shadow-lg transition-opacity duration-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-          >
-            {saved ? "Saved" : "Save Pin Location"}
+          <button type="button" onClick={savePin} className="btn-primary h-[30px] rounded-full px-3 text-[12px]">
+            {saved ? "Saved" : "Save pin"}
           </button>
         ) : null}
       </div>
+      {saveError ? (
+        <p role="alert" className="pill absolute right-4 top-[68px] z-[1000] border border-red-200 bg-red-50 text-red-700">{saveError}</p>
+      ) : null}
     </div>
   );
 }

@@ -1,41 +1,31 @@
-/* Design Tokens - Auto-generated */
-/* Do not edit directly - modify tokens.json instead */
+/* Design Tokens — mirror of tokens.json. Keep both files in sync. */
 
-/* === PRIMITIVES === */
 :root {
+  --bg-canvas: #F4F6F9;
+  --surface-glass: rgba(255, 255, 255, 0.92);
+  --surface-subtle: #F8FAFC;
+  --surface-hover: #F1F5F9;
+  --border-hairline: rgba(15, 23, 42, 0.08);
+  --border-control: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --accent-cobalt: #2563EB;
+  --accent-sky: #38BDF8;
+  --status-teal: #0D9488;
+  --status-amber: #D97706;
+  --status-emerald: #10B981;
+  --status-red: #DC2626;
 
-}
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
-/* === SEMANTIC === */
-:root {
-  --color-primary: #0F172A;
-  --color-on-primary: #FFFFFF;
-  --color-secondary: #1E293B;
-  --color-on-secondary: #FFFFFF;
-  --color-accent: #22C55E;
-  --color-on-accent: #0F172A;
-  --color-background: #020617;
-  --color-foreground: #F8FAFC;
-  --color-card: #0E1223;
-  --color-card-foreground: #F8FAFC;
-  --color-muted: #1A1E2F;
-  --color-muted-foreground: #94A3B8;
-  --color-border: #334155;
-  --color-destructive: #EF4444;
-  --color-on-destructive: #000000;
-  --color-ring: #FFFFFF;
-  --font-heading: "Fira Code", monospace;
-  --font-body: "Fira Sans", sans-serif;
-  --space-xs: 2px;
-  --space-sm: 4px;
-  --space-md: 8px;
-  --space-lg: 12px;
-  --space-xl: 16px;
-  --space-2xl: 24px;
-  --space-3xl: 32px;
-}
+  --radius-panel: 16px;
+  --radius-card: 12px;
+  --radius-control: 10px;
+  --radius-pill: 9999px;
 
-/* === COMPONENTS === */
-:root {
-
+  --shadow-panel: 0 12px 36px -4px rgba(15, 23, 42, 0.09), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-control: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --blur-glass: 20px;
 }

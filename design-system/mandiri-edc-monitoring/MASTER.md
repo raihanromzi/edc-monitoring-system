@@ -1,236 +1,146 @@
 # Design System Master File
 
-> **LOGIC:** When building a specific page, first check `design-system/pages/[page-name].md`.
-> If that file exists, its rules **override** this Master file.
-> If not, strictly follow the rules below.
+> **LOGIC:** When building a specific page, check `design-system/mandiri-edc-monitoring/pages/[page-name].md` first.
+> If that file exists, its rules **override** this Master file. Otherwise follow the rules below.
 
 ---
 
 **Project:** Mandiri EDC Monitoring
-**Generated:** 2026-11-22 20:14:57
-**Category:** Financial Dashboard
-**Token files:** `tokens.json` (W3C Design Tokens Community Group JSON).
-**CSS variables:** `tokens.css` (`:root` custom properties).
-Token files are master-level only; `--page` overrides do not emit tokens.
-**Design Dials:** Variance 3/10 (Centered / Minimal) | Motion 2/10 (Subtle) | Density 8/10 (Dense / Dashboard)
+**Updated:** 2026-11-22 (revamp to map-first glassmorphic style, after the BFTM Radar reference)
+**Category:** Map-first spatial monitoring tool (field prospecting style)
+**Token files:** `tokens.json` (W3C Design Tokens JSON) and `tokens.css` (`:root` custom properties). Edit `tokens.json` first, then mirror into `tokens.css`.
+**Implementation:** `src/app/globals.css` (component classes) and `tailwind.config.ts` (Tailwind aliases that point to these tokens).
 
 ---
 
-## Global Rules
+## 1. Design Direction
 
-### Color Palette
+* **Archetype:** A full-viewport map with floating glass panels. No rigid split-screen layout.
+* **Core principle:** The map fills `100vw × 100vh`. Search, filters, merchant results, and merchant detail float on translucent panels with hairline borders.
+* **Map provider:** OpenStreetMap tiles through Leaflet. The map is desaturated with CSS filters so the markers stand out. Leaflet's default zoom control is disabled (`zoomControl={false}`), and custom floating controls replace it.
+* **Dials:** Variance 3/10 (disciplined, one memorable element: the glass panel over the map) | Motion 2/10 (subtle, 150ms transitions) | Density 6/10 (dense enough for field use, with room to breathe in cards).
 
-| Role | Hex | CSS Variable |
-|------|-----|--------------|
-| Primary | `#0F172A` | `--color-primary` |
-| On Primary | `#FFFFFF` | `--color-on-primary` |
-| Secondary | `#1E293B` | `--color-secondary` |
-| On Secondary | `#FFFFFF` | `--color-on-secondary` |
-| Accent/CTA | `#22C55E` | `--color-accent` |
-| On Accent/CTA | `#0F172A` | `--color-on-accent` |
-| Background | `#020617` | `--color-background` |
-| Foreground | `#F8FAFC` | `--color-foreground` |
-| Card | `#0E1223` | `--color-card` |
-| Card Foreground | `#F8FAFC` | `--color-card-foreground` |
-| Muted | `#1A1E2F` | `--color-muted` |
-| Muted Foreground | `#94A3B8` | `--color-muted-foreground` |
-| Border | `#334155` | `--color-border` |
-| Destructive | `#EF4444` | `--color-destructive` |
-| On Destructive | `#000000` | `--color-on-destructive` |
-| Ring | `#FFFFFF` | `--color-ring` |
+---
 
-**Color Notes:** Dark bg + green positive indicators
+## 2. Design Tokens
 
-### Typography
-
-- **Heading Font:** Fira Code
-- **Body Font:** Fira Sans
-- **Mood:** dashboard, data, analytics, code, technical, precise
-- **Google Fonts:** [Fira Code + Fira Sans](https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap)
-
-**CSS Import:**
-```css
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
-```
-
-### Spacing Variables
-
-*Density: 8/10 — Dense / Dashboard*
+### 2.1 Color
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--space-xs` | `2px` / `0.125rem` | Tight gaps |
-| `--space-sm` | `4px` / `0.25rem` | Icon gaps, inline spacing |
-| `--space-md` | `8px` / `0.5rem` | Standard padding |
-| `--space-lg` | `12px` / `0.75rem` | Section padding |
-| `--space-xl` | `16px` / `1rem` | Large gaps |
-| `--space-2xl` | `24px` / `1.5rem` | Section margins |
-| `--space-3xl` | `32px` / `2rem` | Hero padding |
+| `--bg-canvas` | `#F4F6F9` | App background, map fallback |
+| `--surface-glass` | `rgba(255,255,255,0.92)` | Floating panels, detail popover, control pills |
+| `--surface-subtle` | `#F8FAFC` | Secondary button fill, footer summary, stat wells |
+| `--surface-hover` | `#F1F5F9` | Hover on cards, inputs, secondary buttons |
+| `--border-hairline` | `rgba(15,23,42,0.08)` | Outer borders for panels and icon controls |
+| `--border-control` | `#E2E8F0` | Inputs, dropdowns, inactive chips |
+| `--text-primary` | `#0F172A` | Headings, primary button, active chip |
+| `--text-secondary` | `#475569` | Subtitles, metadata, inactive chip labels |
+| `--text-muted` | `#94A3B8` | Placeholders, micro labels |
+| `--accent-cobalt` | `#2563EB` | Focus ring, active selection outline, live dot |
+| `--accent-sky` | `#38BDF8` | Branch marker core |
+| `--status-red` | `#DC2626` | RED health: needs visit |
+| `--status-amber` | `#D97706` | YELLOW health: watchlist |
+| `--status-emerald` | `#10B981` | GREEN health: healthy, confirmations |
+| `--status-teal` | `#0D9488` | Spare category color |
 
-### Shadow Depths
+Contrast: `--text-muted` on white is below 4.5:1. Use it only for placeholders and decorative micro labels, never for information that must be read. Use `--text-secondary` for real metadata.
 
-| Level | Value | Usage |
-|-------|-------|-------|
-| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` | Subtle lift |
-| `--shadow-md` | `0 4px 6px rgba(0,0,0,0.1)` | Cards, buttons |
-| `--shadow-lg` | `0 10px 15px rgba(0,0,0,0.1)` | Modals, dropdowns |
-| `--shadow-xl` | `0 20px 25px rgba(0,0,0,0.15)` | Hero images, featured cards |
+### 2.2 Typography
 
----
+* **UI sans:** Inter (`400 / 500 / 600`).
+* **Mono / tabular:** JetBrains Mono (`500 / 600`) with `font-variant-numeric: tabular-nums`. Use it only for coordinates, distances, counts, IDR amounts, and MIDs.
+* **Google Fonts import:** `https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap`
 
-## Component Specs
+| Role | Font | Size | Weight | Tracking / Line height |
+|------|------|------|--------|------------------------|
+| App title | Inter | 16px | 600 | -0.01em / 1.2 |
+| Section header | Inter | 13px | 600 | 0 / 1.3 |
+| Micro label | Inter | 11px | 500 | +0.05em / uppercase |
+| Body / control | Inter | 13px | 500 | 0 / 1.4 |
+| Caption / address | Inter | 11.5px | 400 | 0 / 1.4 |
+| Numeric badge / coordinates | JetBrains Mono | 11–12px | 500–600 | 0 / 1.2 |
 
-### Buttons
+### 2.3 Elevation, blur, radii
 
-```css
-/* Primary Button */
-.btn-primary {
-  background: #22C55E;
-  color: #0F172A;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 200ms ease;
-  cursor: pointer;
-}
+* **Glass:** `backdrop-filter: blur(20px)` with `-webkit-` prefix.
+* **Panel shadow:** `0 12px 36px -4px rgba(15,23,42,0.09), 0 2px 6px rgba(15,23,42,0.04)`
+* **Control shadow:** `0 4px 12px rgba(15,23,42,0.05)`
+* **Radii (strict):** panels and popovers `16px` · list cards `12px` · buttons, inputs, chips, coordinate pill `10px` · status pills `9999px`.
 
-.btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
+### 2.4 Spacing
 
-/* Secondary Button */
-.btn-secondary {
-  background: transparent;
-  color: #F8FAFC;
-  border: 2px solid #0F172A;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 200ms ease;
-  cursor: pointer;
-}
-```
-
-### Cards
-
-```css
-.card {
-  background: #020617;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: var(--shadow-md);
-  transition: all 200ms ease;
-  cursor: pointer;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-```
-
-### Inputs
-
-```css
-.input {
-  padding: 12px 16px;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 200ms ease;
-}
-
-.input:focus {
-  border-color: #0F172A;
-  outline: none;
-  box-shadow: 0 0 0 3px #0F172A20;
-}
-```
-
-### Modals
-
-```css
-.modal-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.modal {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: var(--shadow-xl);
-  max-width: 500px;
-  width: 90%;
-}
-```
+Use an 4px base. Panel padding `16px`. Card padding `12px`. Gaps between controls `6px` (icon stacks) or `8px` (sections).
 
 ---
 
-## Style Guidelines
+## 3. Component Primitives (strict)
 
-**Style:** Minimalism & Swiss Style
+Every interactive control must use one of these classes from `src/app/globals.css`. Do not hand-roll button styles.
 
-**Keywords:** Clean, simple, spacious, functional, white space, high contrast, geometric, sans-serif, grid-based, essential
+| Class | Usage | Key specs |
+|-------|-------|-----------|
+| `.btn-primary` | Primary actions (Navigate, Save pin) | 40px high, `#0F172A` fill (hover `#1E293B`), white 13px / 500, inset top highlight |
+| `.btn-secondary` | Secondary actions (Log visit, Cancel) | 40px high, `#F8FAFC` fill, `1px #E2E8F0` border (hover `#F1F5F9`, border `#CBD5E1`) |
+| `.btn-icon` | Icon controls (export, settings, zoom, recenter) | 40×40px, 10px radius, glass fill, 17px icon `#334155` |
+| `.btn-danger` | Destructive confirm | `#DC2626` fill, white text |
+| `.chip` | Filter chips and segmented controls | 34px high, 10px radius, 12px / 500. Active (`aria-pressed="true"`): `#0F172A` fill, white text, count badge `rgba(255,255,255,0.15)` |
+| `.field` | Inputs, selects, textareas | 38px high, 10px radius, `#E2E8F0` border, focus border cobalt + 3px cobalt ring |
+| `.glass-panel` | Every floating surface | glass fill, blur 20px, 16px radius, hairline border, panel shadow |
+| `.pill` | Status pills, live badge, instruction pill | 9999px radius |
 
-**Best For:** Enterprise apps, dashboards, documentation sites, SaaS platforms, professional tools
-
-**Key Effects:** Subtle hover (200-250ms), smooth transitions, sharp shadows if any, clear type hierarchy, fast loading
-
-### Page Pattern
-
-**Pattern Name:** Enterprise Gateway
-
-- **Conversion Strategy:** Path selection (I am a...). Mega menu navigation. Trust signals prominent. Provide pause/stop for video and rotating logos; stop on focus and reduced motion. Logo carousel controls must be keyboard operable; pause moving media offscreen/hidden and render a static final state under reduced motion.
-- **CTA Placement:** Contact Sales (Primary) + Login (Secondary)
-- **Section Order:** Hero (Video/Mission) > Solutions by Industry > Solutions by Role > Client Logos > Contact Sales
-
----
-
-## Motion
-
-**Scroll Reveal** (Subtle) — Trigger: scroll (viewport enter) | Duration: 300-400ms | Easing: `power1.out`
-
-```js
-gsap.from(el, { opacity: 0, y: 12, duration: 0.35, ease: 'power1.out', scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' } });
-```
-
-**Framework notes:** Requires the ScrollTrigger plugin registered once via gsap.registerPlugin(ScrollTrigger); Use matchMedia('(prefers-reduced-motion: reduce)') to skip non-essential motion and render the final state immediately
-
-- ✅ Keep the y offset small (8-16px) so it reads as a fade, not a slide
-- ❌ Don't reveal below-the-fold content needed for SEO/crawlers as invisible-by-default without a no-JS fallback
-- ⚡ toggleActions 'play none none reverse' avoids re-triggering on every scroll direction change
+Focus: every interactive element shows `outline: 2px solid #2563EB; outline-offset: 2px` on `:focus-visible`.
 
 ---
 
-## Anti-Patterns (Do NOT Use)
+## 4. Layout Zones
 
-- ❌ Light mode default
-- ❌ Slow rendering
-
-### Additional Forbidden Patterns
-
-- ❌ **Emojis as icons** — Use SVG icons (Heroicons, Lucide, Simple Icons)
-- ❌ **Missing cursor:pointer** — All clickable elements must have cursor:pointer
-- ❌ **Layout-shifting hovers** — Avoid scale transforms that shift layout
-- ❌ **Low contrast text** — Maintain 4.5:1 minimum contrast ratio
-- ❌ **Instant state changes** — Always use transitions (150-300ms)
-- ❌ **Invisible focus states** — Focus states must be visible for a11y
+1. **Map canvas (`z-index: 0`):** `100vw × 100vh`, fills the viewport.
+2. **Floating sidebar (`z-index: 20`):** `top 16px · left 16px · bottom 16px · width 380px`. It contains, top to bottom:
+   * A. Header: app title, `LIVE` pill, branch readout, `.btn-icon` for demo data and settings.
+   * B. Search `.field` (38px) and a 2×2 grid of status `.chip`s with counts, followed by a row of product chips.
+   * C. Results: section header with entity count and a priority pill, then a scrollable list of prospect cards (12px radius).
+   * D. Pinned footer: `needs visit`, `watchlist`, and `healthy` counts in mono.
+3. **Instruction pill (`z-index: 10`):** `top 16px · right 16px · height 38px · pill`. Pulsing cobalt dot plus a short instruction. While adjusting a pin it switches to the adjust instruction with Save and Cancel.
+4. **Map controls (`z-index: 10`):** bottom-right stack of three `.btn-icon`s (Recenter, Zoom in, Zoom out) with a 34px mono coordinate pill below them. The pill shows the map center.
+5. **Detail popover (`z-index: 20`):** `left 412px · bottom 16px · width 340px` on desktop. It opens when a marker or a list card is selected. It holds the merchant detail, Detail / Visit history tabs, Navigate, and Log visit.
+6. **Mobile (<768px):** the sidebar becomes a bottom sheet (`bottom 8px`, max height 40dvh). The popover becomes a top sheet. Map controls rise above the sheet.
 
 ---
 
-## Pre-Delivery Checklist
+## 5. Map Markers
 
-Before delivering any UI code, verify:
+* **Health markers:** 26px white circle, 2.5px border in the health color (`RED #DC2626`, `YELLOW #D97706`, `GREEN #10B981`), a small center dot in `#0F172A`. Selected: `#0F172A` fill with a white center dot.
+* **RED pulse:** a soft ring pulse on RED markers only, and only when selected or flagged for adjustment. It is disabled under `prefers-reduced-motion`.
+* **Branch anchor:** 22px `#0F172A` circle with a 2.5px white border, `#38BDF8` core, and a soft cobalt halo.
+* **Hover label:** a Leaflet tooltip with the merchant name. Glass background, 10px radius.
 
-- [ ] No emojis used as icons (use SVG instead)
-- [ ] All icons from consistent icon set (Heroicons/Lucide)
-- [ ] `cursor-pointer` on all clickable elements
-- [ ] Hover states with smooth transitions (150-300ms)
-- [ ] Light mode: text contrast 4.5:1 minimum
-- [ ] Focus states visible for keyboard navigation
-- [ ] `prefers-reduced-motion` respected
-- [ ] Responsive: 375px, 768px, 1024px, 1440px
-- [ ] No content hidden behind fixed navbars
-- [ ] No horizontal scroll on mobile
+---
+
+## 6. Motion
+
+* Transitions: 150ms `cubic-bezier(0.16, 1, 0.3, 1)` on color, border, and background.
+* Map fly-to on select: 500ms, offset so the marker sits to the right of the sidebar.
+* No scroll-triggered reveals. The app is a tool, so motion only answers user actions.
+* Reduced motion: disable pulses and reduce transitions to `0.01ms`.
+
+---
+
+## 7. Accessibility and Quality Floor
+
+* Text contrast at least 4.5:1 for information. `--text-muted` is decorative only.
+* Visible focus on every control. Keyboard support for list, chips, and map controls.
+* All icons are Lucide SVGs. No emoji as icons.
+* `cursor: pointer` on every clickable element.
+* Tested widths: 375px, 768px, 1024px, 1440px. No horizontal page scroll.
+* Nothing essential sits behind the sidebar or the popover without a way to reach it.
+
+---
+
+## 8. Anti-Patterns
+
+* ❌ Split-screen sidebars that lock the map into a box.
+* ❌ Dark theme. The revamp is light glass on the desaturated map.
+* ❌ Hand-rolled button or input classes that drift from the primitives.
+* ❌ Emoji icons, layout-shifting hovers (scale transforms), or invisible focus.
+* ❌ Google Maps controls or paid map providers without an explicit request.

@@ -18,6 +18,7 @@ export default function BranchSettingsForm() {
   const [config, setConfig] = useState<Config | null>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [ok, setOk] = useState(false);
 
   useEffect(() => {
     fetch("/api/branch-config").then((r) => r.json()).then(setConfig).catch(() => setConfig(null));
@@ -41,10 +42,11 @@ export default function BranchSettingsForm() {
       }),
     });
     setSaving(false);
-    setMessage(res.ok ? "Thresholds saved. Merchant health recalculated." : "Save failed.");
+    setOk(res.ok);
+    setMessage(res.ok ? "Thresholds saved. Merchant health recalculated." : "Save failed. Check the values and try again.");
   }
 
-  if (!config) return <Card className="text-center text-sm text-slate-400">Loading configuration…</Card>;
+  if (!config) return <Card className="text-center text-[13px] text-ink-secondary">Loading configuration…</Card>;
 
   const fields: [keyof Config, string, string][] = [
     ["branchName", "Branch name", "text"],
@@ -57,10 +59,10 @@ export default function BranchSettingsForm() {
 
   return (
     <Card className="space-y-4">
-      <h2 className="text-sm font-semibold text-slate-100">Branch Thresholds</h2>
+      <h2 className="text-[13px] font-semibold text-ink">Branch thresholds</h2>
       <form onSubmit={save} className="space-y-4">
         {fields.map(([key, label, type]) => (
-          <label key={key} className="block space-y-1 text-sm text-slate-200">
+          <label key={key} className="block space-y-1.5 text-[12px] font-medium text-ink-secondary">
             {label}
             <Input
               type={type}
@@ -71,8 +73,8 @@ export default function BranchSettingsForm() {
             />
           </label>
         ))}
-        {message ? <p role="status" className={message.startsWith("Thresh") ? "text-xs text-green-400" : "text-xs text-red-400"}>{message}</p> : null}
-        <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save Configuration"}</Button>
+        {message ? <p role="status" className={`text-[12px] ${ok ? "text-emerald-700" : "text-red-700"}`}>{message}</p> : null}
+        <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save configuration"}</Button>
       </form>
     </Card>
   );
