@@ -10,6 +10,12 @@ export async function getBranchConfig() {
   return prisma.branchConfig.upsert({
     where: { id: "default-branch" },
     update: {},
-    create: { id: "default-branch" },
+    create: {
+      id: "default-branch",
+      branchName: "Bank Mandiri KCP Wisma Danantara Indonesia",
+      branchCode: "07000",
+      latitude: -6.22495,
+      longitude: 106.81452,
+    },
   });
 }

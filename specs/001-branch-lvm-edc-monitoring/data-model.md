@@ -121,10 +121,10 @@ generator client {
 
 model BranchConfig {
   id                      String   @id @default("default-branch")
-  branchName              String   @default("Bank Mandiri KCP Jakarta Wisma Nusantara")
-  branchCode              String   @default("10310")
-  latitude                Float    @default(-6.193962)
-  longitude               Float    @default(106.823673)
+  branchName              String   @default("Bank Mandiri KCP Wisma Danantara Indonesia")
+  branchCode              String   @default("07000")
+  latitude                Float    @default(-6.22495)
+  longitude               Float    @default(106.81452)
   redVolumeThreshold      Float    @default(3000000.0) // default Rp 3,000,000 / month
   yellowDropPctThreshold  Float    @default(0.30)      // default 30% drop vs previous period
   redInactivityDays       Int      @default(14)        // default 14 days zero transactions

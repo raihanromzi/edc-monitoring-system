@@ -30,7 +30,7 @@
     {
       "id": "cm3r1a2b...",
       "cif": "10982341",
-      "merchantName": "Djournal Coffee Grand Indonesia",
+      "merchantName": "Kopi Kenangan Menara Mulia",
       "productType": "EDC",
       "mid": "MID8891001",
       "tid": "TID445501",
@@ -41,11 +41,11 @@
       "txCountCurrent": 18,
       "txCountPrevious": 124,
       "healthStatus": "RED",
-      "businessAddress": "Grand Indonesia West Mall GF, Jl. M.H. Thamrin No. 1, Jakarta Pusat",
-      "latitude": -6.1952,
-      "longitude": 106.8218,
+      "businessAddress": "Menara Mulia GF, Jl. Jend. Gatot Subroto Kav. 9-11, Jakarta Selatan",
+      "latitude": -6.2258,
+      "longitude": 106.8172,
       "contactPhone": "081234567890",
-      "distanceMeters": 245.0,
+      "distanceMeters": 310.5,
       "visitCount": 1,
       "lastVisitedAt": "2026-11-15T09:30:00.000Z"
     }
@@ -151,10 +151,10 @@
 ```json
 {
   "id": "default-branch",
-  "branchName": "Bank Mandiri KCP Jakarta Wisma Nusantara",
-  "branchCode": "10310",
-  "latitude": -6.193962,
-  "longitude": 106.823673,
+  "branchName": "Bank Mandiri KCP Wisma Danantara Indonesia",
+  "branchCode": "07000",
+  "latitude": -6.22495,
+  "longitude": 106.81452,
   "redVolumeThreshold": 3000000,
   "yellowDropPctThreshold": 0.30,
   "redInactivityDays": 14
@@ -165,9 +165,9 @@
 - **Request Body**:
 ```json
 {
-  "branchName": "Bank Mandiri KCP Jakarta Wisma Nusantara",
-  "latitude": -6.193962,
-  "longitude": 106.823673,
+  "branchName": "Bank Mandiri KCP Wisma Danantara Indonesia",
+  "latitude": -6.22495,
+  "longitude": 106.81452,
   "redVolumeThreshold": 4000000,
   "yellowDropPctThreshold": 0.35
 }
@@ -181,7 +181,7 @@
 ```json
 {
   "success": true,
-  "seededMerchants": 20,
-  "message": "Sample Central Jakarta (Thamrin/Menteng) merchants loaded successfully."
+  "seededMerchants": 22,
+  "message": "Sample Wisma Danantara merchants loaded successfully."
 }
 ```

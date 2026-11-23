@@ -98,12 +98,12 @@ description: "Task list for Bank Mandiri Branch LVM & EDC Monitoring System"
 
 ## Phase 6: User Story 4 - Branch Health Thresholds & Demonstration Sandbox (Priority: P3)
 
-**Goal**: Allow branch managers to configure branch name, anchor coordinates, and classification thresholds, and provide a 1-click "Load Sample Data" button to seed the database with realistic Central Jakarta (Thamrin/Menteng) merchants.
+**Goal**: Allow branch managers to configure branch name, anchor coordinates, and classification thresholds, and provide a 1-click "Load Sample Data" button to seed the database with realistic merchants around Wisma Danantara Indonesia (Gatot Subroto / SCBD / Semanggi).
 
 **Independent Test**: Modify the Red volume threshold in settings and verify that merchant health pins update immediately; click "Load Sample Data" and confirm 20+ realistic coffee shops and retail outlets populate the map.
 
 - [ ] T030 [P] [US4] Implement `GET /api/branch-config` and `PUT /api/branch-config` endpoints citing `data-model.md` (`BranchConfig.branchName`, `BranchConfig.latitude`, `BranchConfig.longitude`, `BranchConfig.redVolumeThreshold`, `BranchConfig.yellowDropPctThreshold`) per `contracts/api-endpoints.md` in `src/app/api/branch-config/route.ts`
-- [ ] T031 [P] [US4] Create realistic Central Jakarta Bank Mandiri merchant seed generator (coffee shops, bakeries, cafes around KCP Wisma Nusantara Thamrin) in `prisma/seed.ts`
+- [ ] T031 [P] [US4] Create realistic Bank Mandiri merchant seed generator (coffee shops, bakeries, cafes around KCP Wisma Danantara Indonesia) in `prisma/seed.ts`
 - [x] T032 [US4] Implement `POST /api/seed` endpoint to trigger database reset and demo data population in `src/app/api/seed/route.ts`
 - [x] T033 [US4] Build branch threshold configuration form and "Load Sample Data" demo controller in `src/components/settings/BranchSettingsForm.tsx`
 - [x] T034 [US4] Add quick "Load Demo" action button in the global navigation bar in `src/components/navigation/HeaderActions.tsx`

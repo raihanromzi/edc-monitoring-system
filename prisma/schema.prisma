@@ -9,10 +9,10 @@ generator client {
 
 model BranchConfig {
   id                     String   @id @default("default-branch")
-  branchName             String   @default("Bank Mandiri KC Jakarta Senopati")
-  branchCode             String   @default("10100")
-  latitude               Float    @default(-6.2297)
-  longitude              Float    @default(106.8082)
+  branchName             String   @default("Bank Mandiri KCP Wisma Danantara Indonesia")
+  branchCode             String   @default("07000")
+  latitude               Float    @default(-6.22495)
+  longitude              Float    @default(106.81452)
   redVolumeThreshold     Float    @default(3000000.0)
   yellowDropPctThreshold Float    @default(0.30)
   redInactivityDays      Int      @default(14)

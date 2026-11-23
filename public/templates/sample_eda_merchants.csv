@@ -1,6 +1,6 @@
 cif,merchant_name,product_type,mid,tid,status,sales_volume_current,sales_volume_previous,tx_count_current,tx_count_previous,business_address,latitude,longitude,contact_phone
-10982341,Kopi Kenangan Senopati,EDC,MID8891001,TID445501,ACTIVE,1250000,8900000,18,124,"Jl. Senopati No. 41, Jakarta Selatan",-6.2297,106.8082,081234567890
-10982342,Warung Kopi Sejahtera,LIVIN_MERCHANT,LVM99201,N/A,ACTIVE,450000,1200000,12,35,"Jl. Suryo No. 12, Jakarta Selatan",-6.2345,106.8123,081298765432
-10982343,Bakso Solo Samrat,EDC,MID8891003,TID445503,ACTIVE,15400000,16200000,310,325,"Jl. Wolter Monginsidi No. 58, Jakarta Selatan",-6.2389,106.8184,081311223344
-10982344,Cafe Batavia Corner,BOTH,MID8891004,TID445504,ACTIVE,0,4500000,0,62,"Jl. Gunawarman No. 22, Jakarta Selatan",-6.2321,106.8099,081122334455
-10982345,Apotek Sehat Mandiri,EDC,MID8891005,TID445505,INACTIVE,0,0,0,0,"Jl. Cikajang No. 18, Jakarta Selatan",-6.2401,106.8115,081566778899
+10982341,Kopi Kenangan Menara Mulia,EDC,MID8891001,TID445501,ACTIVE,1250000,8900000,18,124,"Menara Mulia GF, Jl. Jend. Gatot Subroto Kav. 9-11, Jakarta Selatan",-6.2258,106.8172,081234567890
+10982342,Warung Kopi Sejahtera Tendean,LIVIN_MERCHANT,LVM99201,N/A,ACTIVE,450000,1200000,12,35,"Jl. Kapten Tendean No. 12, Mampang, Jakarta Selatan",-6.2345,106.8210,081298765432
+10982343,Bakmi GM Semanggi,EDC,MID8891003,TID445503,ACTIVE,15400000,16200000,310,325,"Plaza Semanggi Lt. 3A, Jl. Jend. Sudirman Kav. 50, Jakarta Selatan",-6.2198,106.8152,081311223344
+10982344,Cafe Batavia SCBD,BOTH,MID8891004,TID445504,ACTIVE,0,4500000,0,62,"Fairgrounds SCBD Lot 14, Jl. Jend. Sudirman, Jakarta Selatan",-6.2268,106.8085,081122334455
+10982345,Apotek Century Menara Jamsostek,EDC,MID8891005,TID445505,INACTIVE,0,0,0,0,"Menara Jamsostek GF, Jl. Jend. Gatot Subroto Kav. 38, Jakarta Selatan",-6.2285,106.8198,081566778899

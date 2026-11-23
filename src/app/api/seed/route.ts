@@ -5,5 +5,5 @@ export const dynamic = "force-dynamic";
 
 export async function POST() {
   const seededMerchants = await seedDatabase();
-  return NextResponse.json({ success: true, seededMerchants, message: "Sample South Jakarta merchants loaded successfully." });
+  return NextResponse.json({ success: true, seededMerchants, message: "Sample Wisma Danantara merchants loaded successfully." });
 }

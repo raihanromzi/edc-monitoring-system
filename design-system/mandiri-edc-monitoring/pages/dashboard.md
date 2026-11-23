@@ -17,7 +17,7 @@
 
 ## Sidebar content
 
-* **Header:** `Mandiri EDC` title with `LIVE` pill. Branch name and branch code as the readout (`Bank Mandiri KC Jakarta Senopati · 10100`).
+* **Header:** `Mandiri EDC` title with `LIVE` pill. Branch name and branch code as the readout (`Bank Mandiri KCP Wisma Danantara Indonesia · 07000`).
 * **Search:** placeholder `Search name, CIF, MID`.
 * **Status chips (2×2):** `All`, `Needs visit`, `Watchlist`, `Healthy`, each with a mono count.
 * **Product chips (one row):** `All products`, `EDC`, `Livin'`, `Both`.
