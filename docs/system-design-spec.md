@@ -34,7 +34,7 @@ flowchart LR
 | **Geospatial & UX** | Interactive Map + Distance-Ranked List + Pin Adjustment | Displays coordinates from the CSV on an interactive map (Leaflet/OpenStreetMap), sorted by distance from the branch, with 1-click Google Maps navigation and pin fine-tuning. |
 | **Field Visit Workflow** | Lean Flow: Diagnostic Checklist + Mark as Done | Simple root cause logging (paper empty, signal dead, cashier untrained, competitor promo, store closed) and action notes. No camera or GPS geofencing enforcement for MVP. |
 | **Tech Stack** | Full Cloud (Next.js, Vercel, Neon Postgres / Supabase) | Serverless deployment on Vercel with modern Next.js App Router, Tailwind CSS, and cloud PostgreSQL database. |
-| **Demo & Seeding** | Sample CSV Template + "Load Sample Data" Button | Allows immediate out-of-the-box demonstration with realistic dummy merchants (e.g. coffee shops in South Jakarta) before real CSV upload. |
+| **Demo & Seeding** | Sample CSV Template + "Load Sample Data" Button | Allows immediate out-of-the-box demonstration with realistic dummy merchants (e.g. coffee shops in Thamrin / Menteng, Central Jakarta) before real CSV upload. |
 
 ---
 
@@ -45,8 +45,8 @@ The uploaded CSV must contain the following fields:
 
 ```csv
 cif,merchant_name,product_type,mid,tid,status,sales_volume_current,sales_volume_previous,tx_count_current,tx_count_previous,business_address,latitude,longitude,contact_phone
-10982341,Kopi Kenangan Senopati,EDC,MID8891001,TID445501,ACTIVE,1250000,8900000,18,124,"Jl. Senopati No. 41, Jakarta Selatan",-6.2297,106.8082,081234567890
-10982342,Warung Kopi Sejahtera,LIVIN_MERCHANT,LVM99201,N/A,ACTIVE,450000,1200000,12,35,"Jl. Suryo No. 12, Jakarta Selatan",-6.2345,106.8123,081298765432
+10982341,Djournal Coffee Grand Indonesia,EDC,MID8891001,TID445501,ACTIVE,1250000,8900000,18,124,"Grand Indonesia West Mall GF, Jl. M.H. Thamrin No. 1, Jakarta Pusat",-6.1952,106.8218,081234567890
+10982342,Kopi Sabang 16,LIVIN_MERCHANT,LVM99201,N/A,ACTIVE,450000,1200000,12,35,"Jl. H. Agus Salim No. 16, Menteng, Jakarta Pusat",-6.1865,106.8245,081298765432
 ```
 
 ### 3.2 Database Entity-Relationship Diagram
@@ -160,7 +160,7 @@ function calculateHealthStatus(merchant: Merchant, config: BranchConfig): 'RED' 
 ### 5.3 Admin & Settings Screen
 - **CSV Uploader**: Drag-and-drop EDA CSV upload with column validation and summary preview before overwrite.
 - **Download CSV Template**: Direct download of formatted sample CSV.
-- **Load Sample Data**: One-click demo seeder with 20+ realistic South Jakarta coffee shops, restaurants, and retail merchants.
+- **Load Sample Data**: One-click demo seeder with 20+ realistic Central Jakarta merchants (coffee shops, cafes, and restaurants around Bank Mandiri KCP Wisma Nusantara, Thamrin).
 - **Branch Configuration**:
   - Branch Name & Coordinates (Lat/Long).
   - Red Volume Threshold (Rp).
@@ -175,4 +175,4 @@ function calculateHealthStatus(merchant: Merchant, config: BranchConfig): 'RED' 
 3. **Map Component**: Leaflet / React-Leaflet with OpenStreetMap tiles (SSR-safe dynamic import).
 4. **Data Parser & Health Engine**: CSV parser with schema validation, distance calculation, and status determination.
 5. **Visit Logging**: Form modal updating the `VisitLog` table with historical log view.
-6. **Demo Seeding**: Built-in mock data for Bank Mandiri South Jakarta cluster.
+6. **Demo Seeding**: Built-in mock data for Bank Mandiri KCP Jakarta Wisma Nusantara (Thamrin / Menteng cluster).

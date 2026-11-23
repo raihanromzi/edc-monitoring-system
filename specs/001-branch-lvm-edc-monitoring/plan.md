@@ -59,7 +59,7 @@ specs/001-branch-lvm-edc-monitoring/
 edc-monitoring-system/
 ├── prisma/
 │   ├── schema.prisma            # Prisma schema (BranchConfig, Merchant, VisitLog)
-│   └── seed.ts                  # Seed script with South Jakarta Bank Mandiri sample data
+│   └── seed.ts                  # Seed script with Central Jakarta (Wisma Nusantara Thamrin) sample data
 ├── public/
 │   ├── templates/
 │   │   └── sample_eda_merchants.csv # Downloadable CSV template for branch admins

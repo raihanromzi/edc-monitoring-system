@@ -49,15 +49,15 @@
 1. Navigate to `http://localhost:3000`.
 2. Click the **"Load Sample Data"** action in the header or settings.
 3. **Expected Outcome**:
-   - The map centers on Bank Mandiri KC Senopati (`-6.2297, 106.8082`).
+   - The map centers on Bank Mandiri KCP Wisma Nusantara (`-6.193962, 106.823673`).
    - ~20 markers appear with color-coded pins: 🔴 Red, 🟡 Yellow, and 🟢 Green.
-   - The drawer list shows merchants ranked by distance (e.g., Kopi Kenangan ~350m, Warung Kopi Sejahtera ~520m).
+   - The drawer list shows merchants ranked by distance (e.g., Djournal Coffee GI ~245m, Kopi Sabang 16 ~650m).
 
 ---
 
 ### Scenario B: Inspect Underperforming Merchant & Open Navigation
 1. Filter the list to **"🔴 Needs Visit (Red)"**.
-2. Click on the nearest Red merchant (e.g. *Kopi Kenangan Senopati*).
+2. Click on the nearest Red merchant (e.g. *Djournal Coffee Grand Indonesia*).
 3. **Expected Outcome**:
    - The map pans and zooms to the marker.
    - The detail card shows current volume (e.g. Rp 1.25M vs prior Rp 8.9M, -85% drop).
